@@ -41,7 +41,12 @@ async function run() {
     const usersColl = db.collection("users");
 
     app.get("/vehicle", async (req, res) => {
-      const cursor = vehicleColl.find();
+      const email = req.query.email;
+      const query = {};
+      if (email) {
+        query.email = email;
+      }
+      const cursor = vehicleColl.find(query);
       const result = await cursor.toArray();
       res.send(result);
     });
