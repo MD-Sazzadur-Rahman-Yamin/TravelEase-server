@@ -74,7 +74,7 @@ async function run() {
       const id = req.params.id;
       const updatedVehicle = req.body;
       const query = { _id: new ObjectId(id) };
-      const update = { $set: { updatedVehicle } };
+      const update = { $set: updatedVehicle  };
       const option = {};
       const result = await vehicleColl.updateOne(query, update, option);
       res.send(result);
