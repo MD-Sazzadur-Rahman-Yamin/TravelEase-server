@@ -37,14 +37,14 @@ async function run() {
     await client.connect();
 
     const db = client.db("travelEase-DB");
-    const vehicleColl = db.collection("vehicle");
+    const vehicleColl = db.collection("vehicles");
     const usersColl = db.collection("users");
 
     app.get("/vehicle", async (req, res) => {
-      const email = req.query.email;
+      const userEmail = req.query.userEmail;
       const query = {};
-      if (email) {
-        query.email = email;
+      if (userEmail) {
+        query.userEmail = userEmail;
       }
       const cursor = vehicleColl.find(query);
       const result = await cursor.toArray();
