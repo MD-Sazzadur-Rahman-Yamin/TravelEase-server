@@ -38,7 +38,7 @@ async function run() {
 
     const db = client.db("travelEase-DB");
     const vehicleColl = db.collection("vehicles");
-    // const bookingColl = db.collection("booking");
+    const bookingColl = db.collection("booking");
     const usersColl = db.collection("users");
 
     //vehicles
@@ -89,15 +89,26 @@ async function run() {
       res.send(result);
     });
 
-    // //Booking API
+    //Booking API
 
-    // app.patch("/booking", async (req,res)=>{
-    //   const newBooking = req.body;
-    //   const result = await bookingColl.insertOne(newBooking);
-    //   res.send(result);
-    // })
+    app.get("/booking", async (req, res) => {
+      const userEmail = req.query.userEmail;
+      const query = {};
+      if (userEmail) {
+        query.userEmail = userEmail;
+      }
+      const cursor = bookingColl.find(query);
+      const result = await cursor.toArray();
+      res.send(result);
+    });
 
-    // //Users API
+    app.patch("/booking", async (req, res) => {
+      const newBooking = req.body;
+      const result = await bookingColl.insertOne(newBooking);
+      res.send(result);
+    });
+
+    //Users API
 
     app.post("/users", async (req, res) => {
       const newUser = req.body;
