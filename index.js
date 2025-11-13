@@ -3,6 +3,12 @@ const cors = require("cors");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 require("dotenv").config();
 
+// const admin = require("firebase-admin");
+// const serviceAccount = require("./travelease-yamin-firebase-adminsdk.json");
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount),
+// });
+
 const app = express();
 
 const port = process.env.PORT || 3333;
@@ -10,7 +16,23 @@ const port = process.env.PORT || 3333;
 // Middlewere
 app.use(cors());
 app.use(express.json());
-
+// const verifyFireBaseToken = async (req, res, next) => {
+//   const authorization = req.headers.authorization;
+//   if (!authorization) {
+//     return res.status(402).send({ message: "unauthrized access" });
+//   }
+//   const token = authorization.split(" ")[1];
+//   if (!token) {
+//     return res.status(402).send({ message: "unauthrized access" });
+//   }
+//   try {
+//     const docoded = await admin.auth().verifyIdToken(token);
+//     req.tokenEmail = docoded.email;
+//     next();
+//   } catch {
+//     return res.status(401).send({ message: "unauthrized access" });
+//   }
+// };
 // MongoDB
 const uri = `mongodb+srv://${process.env.db_USER}:${process.env.db_PASSWORD}@cluster0.zzj1wzu.mongodb.net/?appName=Cluster0`;
 
@@ -34,7 +56,7 @@ app.listen(port, () => {
 //MongoDB API
 async function run() {
   try {
-    // await client.connect();
+    await client.connect();
 
     const db = client.db("travelEase-DB");
     const vehicleColl = db.collection("vehicles");
@@ -129,7 +151,7 @@ async function run() {
         res.send(result);
       }
     });
-    // await client.db("admin").command({ ping: 1 });
+    await client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
